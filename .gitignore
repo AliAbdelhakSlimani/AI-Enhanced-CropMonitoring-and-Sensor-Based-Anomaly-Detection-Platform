@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.env
+db.sqlite3
+.venv/
+venv/
+*.log
+.DS_Store
+postgres_data/
+# 1. Supprime complètement le dossier .venv (il est inutile maintenant)
+rm -rf .venv
+
+# 2. Ajoute .venv à ton .gitignore (au cas où)
+echo ".venv/" >> .gitignore
+echo "__pycache__/" >> .gitignore
+echo "*.pyc" >> .gitignore
