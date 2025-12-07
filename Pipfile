@@ -9,6 +9,9 @@ djangorestframework-simplejwt = "*"
 psycopg2-binary = "*"
 django = "*"
 python-decouple = "*"
+requests = "*"
+numpy = "*"
+pyyaml = "*"
 
 [dev-packages]
 

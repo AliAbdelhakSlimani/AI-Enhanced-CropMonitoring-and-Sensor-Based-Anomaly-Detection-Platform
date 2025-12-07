@@ -1,0 +1,16 @@
+# simulator/scenarios/demo.yaml – POUR TESTER EN 30 MINUTES
+plots:
+  1:
+    events:
+      - time: "14:30"
+        type: "irrigation_leak"      # moisture = 18.0 → confiance ~0.98
+      - time: "14:40"
+        type: "heat_stress"          # temp = 36.0 → confiance ~0.96
+      - time: "14:50"
+        type: "excess_moisture"      # moisture = 94.0
+  2:
+    events:
+      - time: "14:35"
+        type: "dry_stress"           # moisture très bas
+      - time: "14:45"
+        type: "cold_stress"          # temp = 6.0

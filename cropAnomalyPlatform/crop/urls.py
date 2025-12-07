@@ -5,7 +5,7 @@ from . import views
 router = DefaultRouter()
 router.register(r'readings', views.SensorReadingViewSet)
 router.register(r'anomalies', views.AnomalyEventViewSet)
-router.register(r'recommendations', views.AgentRecommendationViewSet)
+router.register(r'recommandations', views.AgentRecommendationViewSet)
 
 urlpatterns = [
     path('sensor-readings/', views.SensorReadingIngestionView.as_view(), name='ingest'),
