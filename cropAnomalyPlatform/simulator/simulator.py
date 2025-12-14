@@ -9,7 +9,7 @@ import os
 
 # ================== CONFIG ==================
 API_URL = "http://127.0.0.1:8000/api/sensor-readings/"
-JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY0OTQ4MjM5LCJpYXQiOjE3NjQ4NjE4MzksImp0aSI6IjA1Zjg5NTE0NGY2YjRiNmM5MDZhZjI5OWEyYmY2OTZkIiwidXNlcl9pZCI6IjIifQ.P8KlECm1vytUiP6GerxMud-hB_tkkMIzx9DyCsSH6qY"
+JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY1Nzk0ODg2LCJpYXQiOjE3NjU3MDg0ODYsImp0aSI6ImIyOGNkNzM0YmE2NDRiMmZiMGE3NGM5YjBiYmNkNzI1IiwidXNlcl9pZCI6IjIifQ.hPTkd1QizYTaAopkzGDrFNJU4ytVnZ9MImBrhxR8tJg"
 FREQUENCY_MINUTES = 10
 PLOTS = [1, 2]
 
@@ -48,26 +48,43 @@ def generate_reading(plot_id):
     anomaly_type = None
 
     # --- INJECTION D'ANOMALIES À L'HEURE EXACTE (SANS DATE) ---
-    print(SCENARIOS["plots"][plot_id].get("events", []))
+    #print(SCENARIOS["plots"][plot_id].get("events", []))
     for event in SCENARIOS["plots"][plot_id].get("events", []):
         target_time = event["time"]           # ex: "15:10"
         current_time_str = now.strftime("%H:%M")  # ex: "15:10"
-        print(f"DEBUG → plot {plot_id} | cible: {target_time} | actuel: {current_time_str}")
         # Comparaison EXACTE de l'heure (minute par minute)
         if current_time_str == target_time:
-            print(f"ANOMALIE DÉCLENCHÉE À L'HEURE EXACTE → {event['type']} sur plot {plot_id}")
-
+                # === INJECTION AVEC RANGES RANDOM RÉALISTES ===
+                # Explications pour chaque type d’anomalie (basé sur données agricoles réelles : USDA/FAO)
+                # - irrigation_leak : sol très sec (10–32 % → chute brutale comme une fuite de pompe ; air légèrement sec par évaporation accélérée)
+                # - heat_stress : temp haute (33–42 °C → canicule typique ; air très sec 15–35 % par chaleur ; sol légèrement sec)
+                # - excess_moisture : sol saturé (86–98 % → inondation ou pluie lourde ; air saturé 88–98 % par humidité excessive)
+                # - cold_stress : temp basse (0–9.9 °C → gel nocturne ; air humide 75–95 % car froid retient l'humidité)
+                # - dry_stress : sol sec (25–44 % → sécheresse modérée ; air sec 30–50 % par manque d'eau)
+                # Valeurs aléatoires avec np.random.uniform → naturel, non fixe
             if event["type"] == "irrigation_leak":
-                moisture = 18.0
-            elif event["type"] == "heat_stress":
-                temp = 36.0
-            elif event["type"] == "excess_moisture":
-                moisture = 94.0
-            elif event["type"] == "cold_stress":
-               temp = 6.0
-            elif event["type"] == "dry_stress":
-                moisture = 25.0
+                moisture = round(np.random.uniform(10.0, 32.0), 2)  # sol très sec (chute brutale comme fuite)
+                humidity = round(np.random.uniform(35.0, 55.0), 2)  # air légèrement sec (évaporation accélérée)
 
+            elif event["type"] == "heat_stress":
+                temp = round(np.random.uniform(33.0, 42.0), 2)      # temp haute (canicule typique)
+                humidity = round(np.random.uniform(15.0, 35.0), 2)  # air très sec (chaleur évapore tout)
+                moisture -= np.random.uniform(5.0, 15.0)           # sol légèrement sec (transpiration des plantes accélérée)
+
+            elif event["type"] == "excess_moisture":
+                moisture = round(np.random.uniform(86.0, 98.0), 2)  # sol saturé (inondation ou pluie lourde)
+                humidity = round(np.random.uniform(88.0, 98.0), 2)  # air saturé (humidité excessive partout)
+                temp -= np.random.uniform(2.0, 5.0)                # temp légèrement basse (humidité rafraîchit)
+
+            elif event["type"] == "cold_stress":
+                temp = round(np.random.uniform(0.0, 9.9), 2)        # temp basse (gel nocturne)
+                humidity = round(np.random.uniform(75.0, 95.0), 2)  # air humide (froid retient l'humidité)
+                moisture += np.random.uniform(2.0, 5.0)            # sol légèrement plus humide (condensation)
+        
+            elif event["type"] == "dry_stress":
+                moisture = round(np.random.uniform(25.0, 44.0), 2)  # sol sec (sécheresse modérée)
+                humidity = round(np.random.uniform(30.0, 50.0), 2)  # air sec (manque d'eau générale)
+                temp += np.random.uniform(2.0, 5.0)                # temp légèrement plus haute (sécheresse chauffe l'air)
             injected = True
             anomaly_type = event["type"]
             break  # important : on arrête après la première anomalie déclenchée
@@ -76,14 +93,17 @@ def generate_reading(plot_id):
     if not injected:
         # Fuite nocturne aléatoire (1 chance sur 200 → ~1 fois tous les 3 jours)
         if 2 <= now.hour <= 5 and np.random.rand() < 0.005:
-            moisture = 22.0
+            moisture = round(np.random.uniform(10.0, 32.0), 2)
+            humidity = round(np.random.uniform(35.0, 55.0), 2)
             print("Fuite nocturne naturelle détectée")
             injected = True
             anomaly_type = "irrigation_leak"
 
         # Canicule l’après-midi (seulement si déjà chaud)
         if hour > 13 and temp > 26 and np.random.rand() < 0.01:
-            temp = 35.0
+            temp = round(np.random.uniform(33.0, 42.0), 2)
+            humidity = round(np.random.uniform(15.0, 35.0), 2)
+            moisture -= np.random.uniform(5.0, 15.0)
             print("Canicule naturelle")
             injected = True
             anomaly_type = "heat_stress"
@@ -104,7 +124,7 @@ try:
             readings, anomaly = generate_reading(plot_id)
             r = requests.post(API_URL, json=readings, headers=headers)
             status = "OK" if r.status_code == 201 else f"ERREUR {r.status_code}"
-            print(f"[{datetime.now().strftime('%H:%M')}] Plot {plot_id} → {status} | Anomalie: {anomaly}")
+            print(f"[{datetime.now().strftime('%H:%M')}] Plot {plot_id} → {status} ")#| Anomalie: {anomaly}"
         time.sleep(FREQUENCY_MINUTES * 60)
 except KeyboardInterrupt:
     print("\nSimulateur arrêté.")

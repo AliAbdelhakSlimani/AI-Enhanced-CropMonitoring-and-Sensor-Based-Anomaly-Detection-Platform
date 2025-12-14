@@ -1,6 +1,13 @@
 from rest_framework import serializers
 from .models import FarmProfile, FieldPlot, SensorReading, AnomalyEvent, AgentRecommendation
 
+# crop/serializers.py – AJOUTE ÇA À LA FIN
+class FieldPlotSerializer(serializers.ModelSerializer):
+    farm_name = serializers.CharField(source='farm.name', read_only=True)
+
+    class Meta:
+        model = FieldPlot
+        fields = ['id', 'name', 'farm_name', 'area_hectares', 'crop_variety']
 class SensorReadingSerializer(serializers.ModelSerializer):
     plot = serializers.PrimaryKeyRelatedField(queryset=FieldPlot.objects.all())
 

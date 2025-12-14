@@ -1,16 +1,36 @@
-# simulator/scenarios/demo.yaml – POUR TESTER EN 30 MINUTES
+# simulator/scenarios/demo.yaml – SCÉNARIO RÉALISTE D'UNE JOURNÉE DANS UNE FERME
+# Objectif : 5 anomalies logiques sur 2 parcelles différentes
+# Dates : aujourd'hui et demain (change selon ta date actuelle)
+# Heures : progressives de la nuit au soir (cohérent)
+
 plots:
+  # Plot 1 : Parcelle "Champ Nord" – culture sensible à l'eau
   1:
     events:
-      - time: "14:30"
-        type: "irrigation_leak"      # moisture = 18.0 → confiance ~0.98
-      - time: "14:40"
-        type: "heat_stress"          # temp = 36.0 → confiance ~0.96
-      - time: "14:50"
-        type: "excess_moisture"      # moisture = 94.0
+      # 03:15 – Fuite nocturne (typique : pompe qui s'arrête)
+      - time: "03:15"
+        type: "irrigation_leak"
+        description: "Fuite de pompe nocturne – humidité sol chute à 10-32%"
+      
+      # 14:30 – Canicule d'après-midi (typique en été)
+      - time: "12:14"
+        type: "heat_stress"
+        description: "Température >33°C + air très sec – stress thermique"
+      
+      # 16:45 – Excès d'humidité après arrosage excessif
+      - time: "23:34"
+        type: "excess_moisture"
+        description: "Arrosage trop fort – sol saturé 86-98%"
+
+  # Plot 2 : Parcelle "Champ Sud" – culture plus résistante
   2:
     events:
-      - time: "14:35"
-        type: "dry_stress"           # moisture très bas
-      - time: "14:45"
-        type: "cold_stress"          # temp = 6.0
+      # 05:30 – Gel matinal (typique au printemps)
+      - time: "05:30"
+        type: "cold_stress"
+        description: "Température <10°C + air humide – risque gel"
+      
+      # 13:15 – Sécheresse progressive (manque d'eau sur plusieurs heures)
+      - time: "13:15"
+        type: "dry_stress"
+        description: "Humidité sol 25-44% – sécheresse modérée"

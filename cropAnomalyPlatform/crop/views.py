@@ -2,11 +2,12 @@ from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .models import SensorReading, AnomalyEvent, AgentRecommendation
+from .models import SensorReading, AnomalyEvent, AgentRecommendation, FieldPlot
 from .serializers import (
     SensorReadingSerializer,
     AnomalyEventSerializer,
     AgentRecommendationSerializer,
+    FieldPlotSerializer,
 )
 from .permissions import IsDevice
 
@@ -24,7 +25,13 @@ class SensorReadingIngestionView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class FieldPlotViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = FieldPlotSerializer
+    permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        # Retourne seulement les parcelles des fermes de l'utilisateur connecté
+        return FieldPlot.objects.filter(farm__owner=self.request.user).select_related('farm')
 # GET pour récupérer les lectures (filtrable par plot)
 class SensorReadingViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = SensorReading.objects.all().order_by('-timestamp')

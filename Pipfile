@@ -12,6 +12,10 @@ python-decouple = "*"
 requests = "*"
 numpy = "*"
 pyyaml = "*"
+scikit-learn = "*"
+joblib = "*"
+pandas = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 
