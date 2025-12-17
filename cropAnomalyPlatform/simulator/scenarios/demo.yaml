@@ -18,7 +18,7 @@ plots:
         description: "Température >33°C + air très sec – stress thermique"
       
       # 16:45 – Excès d'humidité après arrosage excessif
-      - time: "23:34"
+      - time: "19:53"
         type: "excess_moisture"
         description: "Arrosage trop fort – sol saturé 86-98%"
 

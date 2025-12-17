@@ -5,7 +5,7 @@ import requests
 import time
 
 API_URL = "http://127.0.0.1:8000/api/sensor-readings/"
-JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY1NTcxMTE1LCJpYXQiOjE3NjU0ODQ3MTUsImp0aSI6ImY4MWViY2RjOGY4ZDQ1ODJiNjg1NzI5Y2JiZTJjNTFiIiwidXNlcl9pZCI6IjIifQ.28wV3KxJuvZFsEZn4lDAkiCcbv3ZYsqW_R9EIWpJ4gM"
+JWT_TOKEN = "<JWT_TOKEN>"
 
 headers = {"Authorization": f"Bearer {JWT_TOKEN}", "Content-Type": "application/json"}
 

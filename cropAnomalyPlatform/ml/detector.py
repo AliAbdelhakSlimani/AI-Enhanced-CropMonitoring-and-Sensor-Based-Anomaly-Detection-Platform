@@ -7,12 +7,14 @@ from django.conf import settings
 from crop.models import SensorReading, AnomalyEvent
 from agent.engine import generate_smart_recommendation
 
-# Chemin corrigé du modèle (marche à 100%)
-BASE_DIR = settings.BASE_DIR
-if "cropAnomalyPlatform" not in str(BASE_DIR):
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
+# Chemin ABSOLU qui marche sur TON PC (Windows) ET en Docker
+CURRENT_FILE = os.path.abspath(__file__)                    # → /app/ml/detector.py en Docker
+ML_DIR = os.path.dirname(CURRENT_FILE)                      # → /app/ml
+BASE_DIR = os.path.dirname(ML_DIR)                          # → /app
 MODEL_PATH = os.path.join(BASE_DIR, "ml", "models", "isolation_forest.joblib")
+
+print(f"[DEBUG] Chemin détecté : {MODEL_PATH}")
+print(f"[DEBUG] Fichier existe ? {os.path.exists(MODEL_PATH)}")
 
 NORMAL_RANGES = {
     "soil_moisture":   (45.0, 75.0),
@@ -45,8 +47,10 @@ def _get_anomaly_type_and_severity(sensor_type: str, value: float) -> tuple[str,
     return "unknown_anomaly", "low"
 
 def load_model():
+    print("--------------------------------------------------")
     if os.path.exists(MODEL_PATH):
         model = joblib.load(MODEL_PATH)
+        
         print(f"[ML] Isolation Forest chargé : {MODEL_PATH}")
         return model
     print("[ML] Pas de modèle → fallback threshold")

@@ -1,0 +1,54 @@
+# Crop Anomaly Platform  
+**Système de monitoring agricole intelligent – Projet Final DS2**  
+Ali Abdelhak Slimani – Décembre 2025 – **20/20**
+
+## Après avoir cloné le projet – voici exactement ce qu’il faut faire
+
+### Prérequis (à installer une seule fois)
+- [Docker Desktop] 
+- Git
+- Node.js 18+ (pour le frontend en mode dev)
+- (Optionnel) Python 3.11+ si tu veux lancer le simulateur en local
+
+### Lancement complet en 30 secondes (méthode recommandée)
+
+# 1. Clone le projet
+git clone https://github.com/ton-username/CropAnomalyPlatform.git
+
+# 2. Lance le backend (Django + PostgreSQL + ML + Agent IA) en Docker
+docker-compose up --build
+Attends que tu vois Starting gunicorn... Listening at: http://0.0.0.0:8000
+Accès immédiat :
+
+Admin Django → http://127.0.0.1:8000/admin/ (login: admin / admin123)
+API DRF complète → http://127.0.0.1:8000/api/
+# pour le frontend
+# Ouvre un NOUVEAU terminal (laisse Docker tourner)
+cd frontend
+npm install
+npm run dev
+Frontend Next.js → http://localhost:3000 (lance-le en mode dev – voir ci-dessous)
+
+### Lancement du simulateur de données (optionnel)
+# Dans un nouveau terminal (Docker doit tourner)
+#             dans ds2
+pipenv install
+pipenv shell
+#             dans cropAnomalyPlatform
+python simulator/simulator.py
+
+# pour l'entrainement du modéle 
+#             dans cropAnomalyPlatform
+python ml/trainer.py
+
+Résultat attendu (tout doit être vert)
+textcrop_db       | database system is ready to accept connections
+crop_backend  | [ML] Isolation Forest chargé
+crop_backend  | Starting gunicorn... Listening at: http://0.0.0.0:8000
+
+# Documentation API – Collection Postman (prête à importer)
+
+1. Télécharge le fichier : `CropAnomalyPlatform.postman_collection.json`
+2. Ouvre Postman → Import → Colle le fichier
+3. essayer de faire la connexion avec l'endpoint connexion normal user
+4. copier le access_token générée et le coller au auth_token

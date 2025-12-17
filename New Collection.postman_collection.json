@@ -1,0 +1,332 @@
+{
+	"info": {
+		"_postman_id": "00542f0b-785f-4c73-832e-6c1c67f867e4",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49561634",
+		"_collection_link": "https://aliabdelhakslimani-1424916.postman.co/workspace/ali-abdelhak-slimani's-Workspac~bb353138-affd-43cc-8b3b-4871715bc0c6/collection/49561634-00542f0b-785f-4c73-832e-6c1c67f867e4?action=share&source=collection_link&creator=49561634"
+	},
+	"item": [
+		{
+			"name": "connexion avec user normale",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "device1",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "loulou@1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/token/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"token",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sensor-redings",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "plot",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "sensor_type",
+							"value": "air_temperature",
+							"type": "text"
+						},
+						{
+							"key": "value",
+							"value": "28.58",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/sensor-readings/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"sensor-readings",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "readings",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "plot",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "sensor_type",
+							"value": "soil_moisture",
+							"type": "text"
+						},
+						{
+							"key": "value",
+							"value": "55",
+							"type": "text"
+						},
+						{
+							"key": "plot",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "sensor_type",
+							"value": "air_temperature",
+							"type": "text"
+						},
+						{
+							"key": "value",
+							"value": "28.5",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/readings",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"readings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "data of a specefic plot",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/readings/?plot=2",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"readings",
+						""
+					],
+					"query": [
+						{
+							"key": "plot",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "anomamlies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/anomalies",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"anomalies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ai agent recommandations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/recommandations",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"recommandations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "plots",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "connexion avec admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "aliabdelhak",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "loulou@1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/token/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"token",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sensor-redaings avec admin",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY2MDgyMzQ2LCJpYXQiOjE3NjU5OTU5NDYsImp0aSI6ImEyNzBlYTc1OGEzMTQ2ZTRiOTIxYzQ2OWQzYTE1MTY2IiwidXNlcl9pZCI6IjIifQ.uKYeLzIwt1I5x2wB4zwz_4yXI7qqAneldXHaNOeFejs",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
